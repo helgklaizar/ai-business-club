@@ -24,7 +24,7 @@ jobs:
             npm install --production=false
             npm run build
 
-            pm2 restart ai-business-club || pm2 start npm --name "ai-business-club" -- start
+            pm2 restart ai-business-club || pm2 start npm --name "ai-business-club" -- start -- -p 3001
             pm2 save
 
             echo "✅ Deployed successfully at $(date)"
