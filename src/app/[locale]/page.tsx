@@ -39,6 +39,17 @@ export default async function Home({
                         </div>
 
                         <div className="flex items-center gap-6">
+                            <div className="hidden lg:flex items-center text-sm font-medium mr-4">
+                                <a href="https://crafthouse.ai" className="text-zinc-400 hover:text-white transition-colors">Home</a>
+                                <span className="text-zinc-600 mx-3">·</span>
+                                <a href="https://expert.crafthouse.ai" className="text-zinc-400 hover:text-white transition-colors">Expert</a>
+                                <span className="text-zinc-600 mx-3">·</span>
+                                <a href="https://support.crafthouse.ai" className="text-zinc-400 hover:text-white transition-colors">Support</a>
+                                <span className="text-zinc-600 mx-3">·</span>
+                                <a href="https://apps.crafthouse.ai" className="text-zinc-400 hover:text-white transition-colors">Apps</a>
+                                <span className="text-zinc-600 mx-4">|</span>
+                            </div>
+
                             <LanguageSwitcher currentLocale={locale} />
                             <div className="w-px h-6 bg-zinc-800 hidden md:block"></div>
                             <AuthButton dict={dict} currentLocale={locale} variant="ghost" />
