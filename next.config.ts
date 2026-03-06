@@ -1,7 +1,5 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  transpilePackages: ["@crafthouse/shared-ui"]
-};
+const nextConfig: NextConfig = {};
 
 export default nextConfig;

@@ -1,0 +1,30 @@
+name: Deploy AI Business Club to Production
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to crafthouse-server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+            cd /var/www/ai-business-club
+            GIT_SSH_COMMAND='ssh -i ~/.ssh/github_deploy' git pull origin main
+
+            npm install --production=false
+            npm run build
+
+            pm2 restart ai-business-club || pm2 start npm --name "ai-business-club" -- start
+            pm2 save
+
+            echo "✅ Deployed successfully at $(date)"
