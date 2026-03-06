@@ -1,0 +1,4 @@
+interface:
+  display_name: "TaskFlow Single"
+  short_description: "One-skill dev flow in .tasks with AS-IS + research + subtasks + anti-slop"
+  default_prompt: "Use taskflow-single to drive the task end-to-end in .tasks with minimal docs (1 page max each), research-driven options, and stepwise subtasks with checks and rollback."

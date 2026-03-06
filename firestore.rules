@@ -1,0 +1,108 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ─── Helpers ──────────────────────────────────────────────────────────────
+
+    // Проверка аутентификации
+    function isAuth() {
+      return request.auth != null;
+    }
+
+    // Проверка роли admin (читаем из users/{uid})
+    function isAdmin() {
+      return isAuth() &&
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // Проверка активной подписки
+    function hasSubscription() {
+      return isAuth() &&
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.subscription == 'active';
+    }
+
+    // Владелец документа
+    function isOwner(uid) {
+      return isAuth() && request.auth.uid == uid;
+    }
+
+    // ─── users ────────────────────────────────────────────────────────────────
+    // Пользователь видит и редактирует только свой документ.
+    // Поле subscription и role — только admin может менять.
+    match /users/{uid} {
+      allow read: if isOwner(uid) || isAdmin();
+
+      // Создать свой документ при регистрации (только с безопасными полями)
+      allow create: if isOwner(uid) &&
+        !('role' in request.resource.data) &&
+        !('subscription' in request.resource.data);
+
+      // Обновить свой документ — нельзя трогать role и subscription
+      allow update: if isOwner(uid) &&
+        !('role' in request.resource.data.diff(resource.data).affectedKeys()) &&
+        !('subscription' in request.resource.data.diff(resource.data).affectedKeys());
+
+      // Admin может делать всё
+      allow write: if isAdmin();
+
+      allow delete: if isAdmin();
+    }
+
+    // ─── threads (Q&A форум) ──────────────────────────────────────────────────
+    match /threads/{threadId} {
+      // Читают только резиденты с подпиской
+      allow read: if hasSubscription();
+
+      // Создать может любой авторизованный резидент
+      allow create: if hasSubscription() &&
+        request.resource.data.authorEmail == request.auth.token.email;
+
+      // Редактировать — только свой или admin
+      allow update: if isAdmin() ||
+        (hasSubscription() && resource.data.authorEmail == request.auth.token.email);
+
+      allow delete: if isAdmin();
+
+      // ─── replies ───────────────────────────────────────────────────────────
+      match /replies/{replyId} {
+        allow read: if hasSubscription();
+
+        allow create: if hasSubscription() &&
+          request.resource.data.authorEmail == request.auth.token.email;
+
+        allow update: if isAdmin() ||
+          (hasSubscription() && resource.data.authorEmail == request.auth.token.email);
+
+        allow delete: if isAdmin();
+      }
+    }
+
+    // ─── cases ────────────────────────────────────────────────────────────────
+    // Читают все резиденты. CRUD — только admin.
+    match /cases/{caseId} {
+      allow read: if hasSubscription();
+      allow write: if isAdmin();
+    }
+
+    // ─── prompts ──────────────────────────────────────────────────────────────
+    match /prompts/{promptId} {
+      allow read: if hasSubscription();
+      allow write: if isAdmin();
+    }
+
+    // ─── events (Academy — предстоящие) ───────────────────────────────────────
+    match /events/{eventId} {
+      allow read: if hasSubscription();
+      allow write: if isAdmin();
+    }
+
+    // ─── recordings (Academy — архив) ────────────────────────────────────────
+    match /recordings/{recordingId} {
+      allow read: if hasSubscription();
+      allow write: if isAdmin();
+    }
+  }
+}

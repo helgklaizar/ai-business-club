@@ -1,0 +1,3 @@
+0000000000000000000000000000000000000000 a3eccd3f0684a43a026355ff0e54da81f2964213 AI <ai@example.com> 1772807012 +0200	commit (initial): Initial commit
+a3eccd3f0684a43a026355ff0e54da81f2964213 3e9cf91f20f25a1ead97c19e4b6a78a693c78642 AI <ai@example.com> 1772807513 +0200	commit: feat(infra): setup firebase and stripe
+3e9cf91f20f25a1ead97c19e4b6a78a693c78642 8758222cd7a0242a5dc7a9714df118b8a4d9a4bd AI <ai@example.com> 1772807790 +0200	commit: refactor(infra): remove stripe per user request
