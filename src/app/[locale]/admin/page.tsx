@@ -474,14 +474,13 @@ const AdminContent = ({ locale }: { locale: string }) => {
             <header className="sticky top-0 z-40 border-b border-white/5 bg-zinc-950/80 backdrop-blur-xl">
                 <div className="container mx-auto px-6 py-4 flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                        <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-lg bg-brand/10 border border-brand/30 flex items-center justify-center">
-                                <Zap size={16} className="text-brand" />
-                            </div>
-                            <span className="font-extrabold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-500">
-                                AI BUSINESS CLUB
-                            </span>
-                        </div>
+                        <a href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity mr-4">
+                    <img src="/logo.jpg" alt="Craft House AI" width={32} height={32} className="rounded-lg object-cover" />
+                    <div className="flex flex-col">
+                        <span className="font-semibold text-[14px] leading-[1.2] text-[#e8e8e8]">Craft House AI</span>
+                        <span className="text-[10px] text-[#ff6b2b] uppercase font-bold tracking-[0.5px]">Club</span>
+                    </div>
+                </a>
                         <div className="flex items-center gap-1.5 bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold px-3 py-1 rounded-full">
                             <Shield size={12} />
                             Admin Panel

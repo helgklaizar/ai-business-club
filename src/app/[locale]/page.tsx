@@ -25,18 +25,13 @@ export default async function Home({
                 {/* Navigation */}
                 <header className="fixed top-0 inset-x-0 z-50 border-b border-white/5 bg-zinc-950/50 backdrop-blur-xl supports-[backdrop-filter]:bg-zinc-950/20">
                     <div className="container mx-auto px-6 h-20 flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                            <Image
-                                src="/logo.jpg"
-                                alt="Logo"
-                                width={40}
-                                height={40}
-                                className="rounded-xl brightness-110 contrast-125 saturate-150"
-                            />
-                            <span className="font-extrabold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-500">
-                                {dict.global.logoText}
-                            </span>
-                        </div>
+                        <a href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity mr-4">
+                    <img src="/logo.jpg" alt="Craft House AI" width={32} height={32} className="rounded-lg object-cover" />
+                    <div className="flex flex-col">
+                        <span className="font-semibold text-[14px] leading-[1.2] text-[#e8e8e8]">Craft House AI</span>
+                        <span className="text-[10px] text-[#ff6b2b] uppercase font-bold tracking-[0.5px]">Club</span>
+                    </div>
+                </a>
 
                         <div className="flex items-center gap-6">
                             <div className="hidden lg:flex items-center text-sm font-medium mr-4">
